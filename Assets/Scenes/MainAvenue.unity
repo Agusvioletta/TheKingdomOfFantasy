@@ -1155,6 +1155,7 @@ GameObject:
   - component: {fileID: 223500349}
   - component: {fileID: 223500348}
   - component: {fileID: 223500347}
+  - component: {fileID: 223500353}
   m_Layer: 6
   m_Name: 'brutus '
   m_TagString: Untagged
@@ -1194,6 +1195,10 @@ MonoBehaviour:
   - {fileID: 796513268}
   waitTimeAtPoint: 3
   pointTolerance: 1
+  footstepPool: {fileID: 223500353}
+  footstepClips:
+  - {fileID: 8300000, guid: 4cf07d9486fbb3e41aeeba6c176639f3, type: 3}
+  stepIntervalAtPatrolSpeed: 0.6
   animator: {fileID: 0}
 --- !u!195 &223500348
 NavMeshAgent:
@@ -1312,6 +1317,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &223500353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223500346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84de01745edeca468f80a8e0e819396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TKOF.Systems.FootstepAudioPool
+  audioSourcePrefab: {fileID: 8911715238192110744, guid: d291633d96dfaba47b6724e666a8bb9e, type: 3}
+  poolSize: 8
 --- !u!1 &244131581
 GameObject:
   m_ObjectHideFlags: 0

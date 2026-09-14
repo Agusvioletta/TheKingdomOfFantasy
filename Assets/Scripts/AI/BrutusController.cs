@@ -32,6 +32,13 @@ namespace TKOF.AI
         [SerializeField] private float waitTimeAtPoint = 5f; // "con espera en cada uno" (GDD)
         [SerializeField] private float pointTolerance = 1.0f;
 
+        [Header("Audio de pasos (usa el Pool)")]
+        [SerializeField] private TKOF.Systems.FootstepAudioPool footstepPool;
+        [SerializeField] private AudioClip[] footstepClips;
+        [SerializeField] private float stepIntervalAtPatrolSpeed = 0.6f;
+
+        private float _stepTimer;
+
         // Cambiá esto a true si en algún momento necesitás volver a ver el
         // detalle de distancia/ángulo/patrulla frame a frame. Lo dejamos en
         // false para no inundar la Console con logs de bajo valor.
@@ -105,6 +112,8 @@ namespace TKOF.AI
             }
 
             if (animator != null) animator.SetFloat("Speed", _agent.velocity.magnitude);
+
+            HandleFootsteps();
         }
 
         public void ChangeState(IAIState newState)
@@ -196,6 +205,28 @@ namespace TKOF.AI
             float distance = Vector3.Distance(transform.position, _player.position);
             float pressure = 1f - Mathf.Clamp01(distance / visionRadius);
             _playerHeartRate.SetThreatPressure(pressure);
+        }
+
+        /// <summary>
+        /// PATRÓN: POOL en uso real. En vez de crear/destruir un AudioSource
+        /// por cada paso, le pide uno reutilizable a FootstepAudioPool. El
+        /// intervalo entre pasos se achica cuando Brutus va más rápido
+        /// (persecución), así que suena más apurado.
+        /// </summary>
+        private void HandleFootsteps()
+        {
+            if (footstepPool == null || footstepClips == null || footstepClips.Length == 0) return;
+
+            float speed = _agent.velocity.magnitude;
+            if (speed < 0.25f) return; // parado (o casi), no pisa nada
+
+            float interval = stepIntervalAtPatrolSpeed * (patrolSpeed / speed);
+            _stepTimer += Time.deltaTime;
+            if (_stepTimer < interval) return;
+
+            _stepTimer = 0f;
+            var clip = footstepClips[Random.Range(0, footstepClips.Length)];
+            footstepPool.PlayAt(transform.position, clip, 0.5f);
         }
 
         public void CapturePlayer()

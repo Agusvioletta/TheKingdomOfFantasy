@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TKOF.Core;
 
@@ -15,6 +17,11 @@ namespace TKOF.Systems
 
         private ObjectPool<AudioSource> _pool;
 
+        // Si un AudioSource se reutiliza antes de que termine su devolución
+        // pendiente del uso anterior, cancelamos esa corrutina vieja para que
+        // no lo desactive a mitad de la nueva reproducción.
+        private readonly Dictionary<AudioSource, Coroutine> _pendingReturns = new Dictionary<AudioSource, Coroutine>();
+
         private void Awake()
         {
             _pool = new ObjectPool<AudioSource>(audioSourcePrefab, transform, poolSize);
@@ -23,16 +30,25 @@ namespace TKOF.Systems
         public void PlayAt(Vector3 position, AudioClip clip, float volume = 1f)
         {
             var source = _pool.Get();
+
+            if (_pendingReturns.TryGetValue(source, out var oldRoutine) && oldRoutine != null)
+            {
+                StopCoroutine(oldRoutine);
+            }
+
             source.transform.position = position;
             source.clip = clip;
             source.volume = volume;
+            source.gameObject.SetActive(true);
             source.Play();
-            StartCoroutine(ReturnWhenDone(source));
+
+            _pendingReturns[source] = StartCoroutine(ReturnWhenDone(source));
         }
 
-        private System.Collections.IEnumerator ReturnWhenDone(AudioSource source)
+        private IEnumerator ReturnWhenDone(AudioSource source)
         {
             yield return new WaitForSeconds(source.clip.length);
+            _pendingReturns.Remove(source);
             _pool.Return(source);
         }
     }
