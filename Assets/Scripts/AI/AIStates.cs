@@ -41,7 +41,7 @@ namespace TKOF.AI
             }
 
 #if UNITY_EDITOR
-            if (Time.unscaledTime - _lastLogTime > 0.5f)
+            if (BrutusController.VerboseLogging && Time.unscaledTime - _lastLogTime > 0.5f)
             {
                 _lastLogTime = Time.unscaledTime;
                 Debug.Log($"[Patrol] esperando={_isWaiting} timer={_waitTimer:F1}/{b.WaitTimeAtPoint:F1} " +

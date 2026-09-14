@@ -34,6 +34,9 @@ namespace TKOF.Player
         [Header("Stamina (opcional)")]
         [SerializeField] private PlayerStamina stamina; // dejalo vacío si no usás límite de sprint
 
+        [Header("Empujar cajas físicas (opcional)")]
+        [SerializeField] private float pushForce = 3f;
+
         [Header("Input Actions")]
         [SerializeField] private InputActionReference moveAction;
         [SerializeField] private InputActionReference lookAction;
@@ -146,5 +149,22 @@ namespace TKOF.Player
 
         public bool IsCrouching => _isCrouching;
         public bool IsSprinting => sprintAction.action.IsPressed() && (stamina == null || stamina.CanSprint);
+
+        /// <summary>
+        /// El CharacterController NO empuja Rigidbodies por sí solo — hay que
+        /// hacerlo a mano. Unity llama esto automáticamente cada vez que el
+        /// CharacterController choca contra algo mientras se mueve.
+        /// </summary>
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            Rigidbody body = hit.collider.attachedRigidbody;
+            if (body == null || body.isKinematic) return;
+
+            // No empujar hacia abajo (evita "pisar" cajas raro al caminar sobre ellas)
+            if (hit.moveDirection.y < -0.3f) return;
+
+            Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0f, hit.moveDirection.z);
+            body.AddForce(pushDirection * pushForce, ForceMode.Impulse);
+        }
     }
 }

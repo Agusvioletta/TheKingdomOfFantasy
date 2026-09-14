@@ -13,8 +13,20 @@ namespace TKOF.Core
 
         private void Awake()
         {
-            retryButton.onClick.AddListener(() => GameManager.Instance.RestartGameplay());
-            menuButton.onClick.AddListener(() => GameManager.Instance.ReturnToMenu());
+            retryButton.onClick.AddListener(() =>
+            {
+#if UNITY_EDITOR
+                Debug.Log("[DefeatPanel] Botón Reintentar clickeado");
+#endif
+                GameManager.Instance.RestartGameplay();
+            });
+            menuButton.onClick.AddListener(() =>
+            {
+#if UNITY_EDITOR
+                Debug.Log("[DefeatPanel] Botón Menú clickeado");
+#endif
+                GameManager.Instance.ReturnToMenu();
+            });
         }
 
         private void Start() => Hide(); // arranca oculto

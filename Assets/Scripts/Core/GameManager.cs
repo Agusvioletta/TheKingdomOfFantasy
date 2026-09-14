@@ -37,7 +37,7 @@ namespace TKOF.Core
             }
         }
 
-        [SerializeField] private string gameplaySceneName = "MainAvenue";
+        [SerializeField] private string gameplaySceneName = "AvenidaPrincipal";
         [SerializeField] private string menuSceneName = "MainMenu";
 
         // ESTRUCTURA DE DATOS: Dictionary.
@@ -78,6 +78,9 @@ namespace TKOF.Core
 
         public void OnPlayerCaught()
         {
+#if UNITY_EDITOR
+            Debug.Log($"[GameManager] OnPlayerCaught() llamado. CurrentState en este momento: {CurrentState}");
+#endif
             if (CurrentState == GameState.Victory || CurrentState == GameState.Defeat) return;
             CurrentState = GameState.Defeat;
             EventManager.RaisePlayerDefeated();
@@ -100,8 +103,14 @@ namespace TKOF.Core
 
         public void RestartGameplay()
         {
+#if UNITY_EDITOR
+            Debug.Log($"[GameManager] RestartGameplay() llamado. CurrentState antes: {CurrentState}");
+#endif
             Time.timeScale = 1f;
             CurrentState = GameState.Playing;
+#if UNITY_EDITOR
+            Debug.Log($"[GameManager] CurrentState reseteado a: {CurrentState}");
+#endif
             SceneManager.LoadScene(gameplaySceneName);
         }
     }

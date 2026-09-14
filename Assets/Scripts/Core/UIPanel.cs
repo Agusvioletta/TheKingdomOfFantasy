@@ -16,6 +16,9 @@ namespace TKOF.Core
 
         public virtual void Show()
         {
+#if UNITY_EDITOR
+            Debug.Log($"[{GetType().Name}] Show() ejecutado (frame {Time.frameCount})", this);
+#endif
             IsVisible = true;
             canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
@@ -25,6 +28,9 @@ namespace TKOF.Core
 
         public virtual void Hide()
         {
+#if UNITY_EDITOR
+            Debug.Log($"[{GetType().Name}] Hide() ejecutado (frame {Time.frameCount})", this);
+#endif
             IsVisible = false;
             canvasGroup.alpha = 0f;
             canvasGroup.interactable = false;

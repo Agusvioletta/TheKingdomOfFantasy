@@ -32,6 +32,11 @@ namespace TKOF.AI
         [SerializeField] private float waitTimeAtPoint = 5f; // "con espera en cada uno" (GDD)
         [SerializeField] private float pointTolerance = 1.0f;
 
+        // Cambiá esto a true si en algún momento necesitás volver a ver el
+        // detalle de distancia/ángulo/patrulla frame a frame. Lo dejamos en
+        // false para no inundar la Console con logs de bajo valor.
+        public const bool VerboseLogging = false;
+
         [Header("Animación (opcional)")]
         [SerializeField] private Animator animator; // dejalo vacío si todavía no tenés modelo/animaciones
 
@@ -84,7 +89,7 @@ namespace TKOF.AI
             float distanceToPlayer = Vector3.Distance(transform.position, _player.position);
 
 #if UNITY_EDITOR
-            if (Time.unscaledTime - _lastDistanceLogTime > 0.5f)
+            if (VerboseLogging && Time.unscaledTime - _lastDistanceLogTime > 0.5f)
             {
                 _lastDistanceLogTime = Time.unscaledTime;
                 Debug.Log($"[Brutus] Distancia al jugador: {distanceToPlayer:F2} (Capture Distance actual: {captureDistance:F2})");
@@ -164,6 +169,7 @@ namespace TKOF.AI
         private void LogDebug(string message)
         {
 #if UNITY_EDITOR
+            if (!VerboseLogging) return;
             // Throttle: como esto se llama cada frame, logueamos como mucho 2 veces por segundo.
             if (Time.unscaledTime - _lastLogTime < 0.5f) return;
             _lastLogTime = Time.unscaledTime;
@@ -194,9 +200,26 @@ namespace TKOF.AI
 
         public void CapturePlayer()
         {
+#if UNITY_EDITOR
+            Debug.Log($"[Brutus] CapturePlayer() ejecutado. agent.isStopped antes de esto: {_agent.isStopped}");
+#endif
             _agent.isStopped = true;
             EventManager.RaisePlayerDetected();
             GameManager.Instance.OnPlayerCaught();
+        }
+
+        /// <summary>
+        /// Llamado desde afuera (ej. AlarmTriggerZone) para forzar a Brutus a
+        /// Alerta, sin que haya sido detección visual real. No pisa una
+        /// Persecución en curso: si ya te está persiguiendo o buscando, una
+        /// alarma de más no lo "relaja" a Alerta.
+        /// </summary>
+        public void ForceAlert(Vector3 suspiciousPosition)
+        {
+            if (_currentState is ChaseState) return;
+
+            LastKnownPlayerPosition = suspiciousPosition;
+            ChangeState(new AlertState());
         }
     }
 }
