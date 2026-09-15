@@ -5,10 +5,9 @@ using TKOF.Core;
 namespace TKOF.Systems
 {
     /// <summary>
-    /// Alternativa simple a usar un Animator: hace girar el carrusel durante
-    /// un tiempo cuando se activa, sin necesitar clips de animación. Se
-    /// suscribe al evento del Observer en vez de que CarouselPanelInteractable
-    /// lo llame directo — así el carrusel no necesita saber que esto existe.
+    /// hace girar el carrusel durante un tiempo
+    /// cuando se activa, sin necesitar clips de animación. Se
+    /// suscribe al evento del Observer.
     /// </summary>
     public class CarouselSpinner : MonoBehaviour
     {

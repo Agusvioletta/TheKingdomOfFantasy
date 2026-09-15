@@ -4,7 +4,7 @@ using UnityEngine.AI;
 namespace TKOF.AI
 {
     /// <summary>
-    /// INTERFAZ (caso 2) + PATRÓN: STRATEGY.
+    /// INTERFAZ + STRATEGY.
     /// Cada estado de la IA (Patrulla, Alerta, Persecución, Búsqueda) es una
     /// estrategia intercambiable que implementa el mismo contrato. Brutus
     /// (el "contexto") solo conoce IAIState y llama Tick() cada frame; no
@@ -64,7 +64,7 @@ namespace TKOF.AI
 
             if (!b.Agent.pathPending && b.Agent.remainingDistance <= b.PointTolerance)
             {
-                _isWaiting = true; // llegó al punto: espera acá antes de seguir
+                _isWaiting = true; // llegó al punto y espera acá antes de seguir
             }
         }
 
@@ -116,10 +116,8 @@ namespace TKOF.AI
     }
 
     /// <summary>
-    /// A diferencia de la versión anterior (que solo iba una vez al último
-    /// punto conocido y esperaba ahí), esta deambula alrededor de esa
-    /// posición mientras busca — más creíble, y toma la idea del script
-    /// viejo que encontraste.
+    /// deambula alrededor de esa
+    /// posición mientras busca al jugador
     /// </summary>
     public class SearchState : IAIState
     {

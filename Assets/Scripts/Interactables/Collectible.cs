@@ -4,10 +4,10 @@ using TKOF.Core;
 namespace TKOF.Interactables
 {
     /// <summary>
-    /// HERENCIA (caso 2): clase base propia para todo objeto coleccionable
+    /// HERENCIA: clase base propia para todo objeto coleccionable
     /// del mundo (diario, foto, ticket). Centraliza el registro en el
     /// GameManager y el highlight visual. Cada subclase define qué contenido
-    /// muestra al leerse, y opcionalmente qué pasa después (OnCollected) —
+    /// muestra al leerse, y opcionalmente qué pasa después (OnCollected) 
     /// por defecto no pasa nada más, pero por ejemplo TicketItem la usa para
     /// desaparecer del mapa una vez levantado.
     /// </summary>
@@ -32,7 +32,6 @@ namespace TKOF.Interactables
 
         protected abstract void ShowContent();
 
-        /// <summary>Gancho opcional: no hace nada por defecto.</summary>
         protected virtual void OnCollected() { }
     }
 }

@@ -4,16 +4,16 @@ namespace TKOF.Core
 {
     /// <summary>
     /// PATRÓN: OBSERVER.
-    /// Canal central de eventos del juego. Los "publicadores" (BPM, Brutus,
-    /// coleccionables) disparan estos eventos sin conocer quién los escucha.
-    /// Los "suscriptores" (HUD, AudioManager, GameManager) se registran y
+    /// Canal central de eventos del juego. Los BPM, Brutus,
+    /// coleccionables disparan estos eventos sin conocer quién los escucha.
+    /// Los HUD, AudioManager, GameManager se registran y
     /// reaccionan. Esto desacopla sistemas que de otra forma tendrían
     /// referencias cruzadas directas.
     /// </summary>
     public static class EventManager
     {
         public static event Action<int> OnBpmChanged;
-        public static event Action<string, int> OnItemCollected; // (id del item, total recolectado)
+        public static event Action<string, int> OnItemCollected; 
         public static event Action OnFlashlightToggled;
         public static event Action<float> OnFlashlightBatteryChanged;
         public static event Action<float> OnStaminaChanged;

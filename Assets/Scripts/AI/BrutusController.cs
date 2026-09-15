@@ -7,7 +7,7 @@ using TKOF.Player;
 namespace TKOF.AI
 {
     /// <summary>
-    /// Contexto del patrón Strategy: mantiene el estado actual (IAIState) y
+    /// Strategy: mantiene el estado actual (IAIState) y
     /// delega en él todo el comportamiento frame a frame. También expone los
     /// datos que las estrategias necesitan (velocidades, distancias, referencia
     /// al jugador).
@@ -29,7 +29,7 @@ namespace TKOF.AI
 
         [Header("Patrulla")]
         [SerializeField] private List<Transform> patrolWaypoints;
-        [SerializeField] private float waitTimeAtPoint = 5f; // "con espera en cada uno" (GDD)
+        [SerializeField] private float waitTimeAtPoint = 5f; // con espera en cada punto
         [SerializeField] private float pointTolerance = 1.0f;
 
         [Header("Audio de pasos (usa el Pool)")]
@@ -39,13 +39,12 @@ namespace TKOF.AI
 
         private float _stepTimer;
 
-        // Cambiá esto a true si en algún momento necesitás volver a ver el
-        // detalle de distancia/ángulo/patrulla frame a frame. Lo dejamos en
-        // false para no inundar la Console con logs de bajo valor.
+        // detalle de distancia/ángulo/patrulla frame a frame. En
+        // false para no inundar la console con logs 
         public const bool VerboseLogging = false;
 
-        [Header("Animación (opcional)")]
-        [SerializeField] private Animator animator; // dejalo vacío si todavía no tenés modelo/animaciones
+        [Header("Animación")]
+        [SerializeField] private Animator animator; 
 
         private NavMeshAgent _agent;
         private Transform _player;
@@ -54,9 +53,9 @@ namespace TKOF.AI
         private IAIState _currentState;
 
         // ESTRUCTURA DE DATOS: Queue<Transform>.
-        // Los 6 puntos de patrulla se recorren en orden circular: se saca el
-        // próximo punto (Dequeue) y se lo vuelve a encolar al final (Enqueue),
-        // lo que da naturalmente un recorrido cíclico sin manejar índices a mano.
+        // Los 6 puntos de patrulla se recorren en orden circular, se saca el
+        // próximo punto (Dequeue) y se lo vuelve a poner al final (Enqueue),
+        // lo que da naturalmente un recorrido cíclico sin manejar índices manualmente.
         private Queue<Transform> _patrolQueue = new Queue<Transform>();
 
         public NavMeshAgent Agent => _agent;
@@ -104,8 +103,8 @@ namespace TKOF.AI
 #endif
 
             // El contacto atrapa sin importar el estado actual de la IA (evita que
-            // un cambio de estado justo al pegarse al jugador "salve" a Brutus de
-            // capturar por estar a mitad de una transición).
+            // un cambio de estado justo al pegarse al jugador evite q Brutus lo
+            // capture por estar a mitad de una transición).
             if (distanceToPlayer < captureDistance)
             {
                 CapturePlayer();
@@ -179,7 +178,6 @@ namespace TKOF.AI
         {
 #if UNITY_EDITOR
             if (!VerboseLogging) return;
-            // Throttle: como esto se llama cada frame, logueamos como mucho 2 veces por segundo.
             if (Time.unscaledTime - _lastLogTime < 0.5f) return;
             _lastLogTime = Time.unscaledTime;
             Debug.Log($"[Brutus] {message}");
@@ -208,7 +206,7 @@ namespace TKOF.AI
         }
 
         /// <summary>
-        /// PATRÓN: POOL en uso real. En vez de crear/destruir un AudioSource
+        /// PATRÓN: POOL. En vez de crear/destruir un AudioSource
         /// por cada paso, le pide uno reutilizable a FootstepAudioPool. El
         /// intervalo entre pasos se achica cuando Brutus va más rápido
         /// (persecución), así que suena más apurado.
@@ -218,7 +216,7 @@ namespace TKOF.AI
             if (footstepPool == null || footstepClips == null || footstepClips.Length == 0) return;
 
             float speed = _agent.velocity.magnitude;
-            if (speed < 0.25f) return; // parado (o casi), no pisa nada
+            if (speed < 0.25f) return; 
 
             float interval = stepIntervalAtPatrolSpeed * (patrolSpeed / speed);
             _stepTimer += Time.deltaTime;
@@ -240,10 +238,10 @@ namespace TKOF.AI
         }
 
         /// <summary>
-        /// Llamado desde afuera (ej. AlarmTriggerZone) para forzar a Brutus a
-        /// Alerta, sin que haya sido detección visual real. No pisa una
+        /// Llamado desde afuera (AlarmTriggerZone) para forzar a Brutus a
+        /// estado Alerta, sin que haya sido detección visual real. No pisa una
         /// Persecución en curso: si ya te está persiguiendo o buscando, una
-        /// alarma de más no lo "relaja" a Alerta.
+        /// alarma de más no lo pone a Alerta.
         /// </summary>
         public void ForceAlert(Vector3 suspiciousPosition)
         {

@@ -3,10 +3,8 @@ using UnityEngine;
 namespace TKOF.Systems
 {
     /// <summary>
-    /// Ejemplo independiente de Colisión con Rigidbody (requisito de Motores
-    /// de Desarrollo 1, punto 7). Caja física empujable: al chocar contra
-    /// algo, cambia de color un instante. Demuestra la diferencia con el
-    /// trigger de al lado — acá los objetos chocan de verdad, no se
+    /// Caja física empujable: al chocar contra algo,
+    /// cambia de color un instante. acá los objetos chocan de verdad, no se
     /// atraviesan.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]

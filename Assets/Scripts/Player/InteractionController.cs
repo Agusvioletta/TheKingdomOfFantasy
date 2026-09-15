@@ -8,25 +8,26 @@ namespace TKOF.Player
     /// <summary>
     /// Lanza un raycast frontal y detecta cualquier IInteractable, sin
     /// importar de qué clase concreta sea (Diary, Photograph, TicketItem,
-    /// CarouselPanelInteractable, TrapdoorInteractable...). Esto es lo que
+    /// CarouselPanelInteractable, TrapdoorInteractable.). Esto es lo que
     /// aprovecha la interfaz: un único camino de código para todo el sistema
     /// de interacción. El highlight usa otra interfaz aparte (IHighlightable)
     /// porque no todo interactuable necesita iluminarse.
     ///
-    /// El origen del rayo es el CameraPivot (pegado al personaje, a la
-    /// altura del hombro) y no la Camera real, porque en tercera persona la
+    /// El origen del rayo es el CameraPivot y no la Camera real, porque en tercera persona la
     /// Camera está desplazada varias unidades hacia atrás (shoulderOffset) y
     /// eso arruinaría el cálculo de "interactionRange".
     /// </summary>
     public class InteractionController : MonoBehaviour
     {
-        [SerializeField] private Transform aimOrigin; // arrastrá el CameraPivot acá
+        [SerializeField] private Transform aimOrigin; 
         [SerializeField] private float interactionRange = 2.5f;
         [SerializeField] private LayerMask interactableLayer;
         [SerializeField] private InputActionReference interactAction;
 
         private IInteractable _current;
         private IHighlightable _currentHighlightable;
+
+        public bool HasInteractableInSight => _current != null;
 
         private void OnEnable() => interactAction.action.Enable();
         private void OnDisable() => interactAction.action.Disable();
@@ -42,7 +43,7 @@ namespace TKOF.Player
             if (readingPanelOpen)
             {
                 UIReadingPanel.Instance.Hide();
-                return; // este mismo E no debe además abrir algo nuevo
+                return; 
             }
 
             _current?.Interact();
@@ -53,12 +54,15 @@ namespace TKOF.Player
             IInteractable found = null;
             IHighlightable foundHighlightable = null;
 
-#if UNITY_EDITOR
-            Debug.DrawRay(aimOrigin.position, aimOrigin.forward * interactionRange, Color.red);
-#endif
+            Camera cam = Camera.main;
+            float extraDist = Vector3.Distance(cam.transform.position, aimOrigin.position);
 
-            if (Physics.Raycast(aimOrigin.position, aimOrigin.forward,
-                    out RaycastHit hit, interactionRange, interactableLayer))
+        #if UNITY_EDITOR
+            Debug.DrawRay(cam.transform.position, cam.transform.forward * (interactionRange + extraDist), Color.red);
+        #endif
+
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward,
+                    out RaycastHit hit, interactionRange + extraDist, interactableLayer))
             {
                 found = hit.collider.GetComponent<IInteractable>();
                 foundHighlightable = hit.collider.GetComponent<IHighlightable>();
@@ -72,7 +76,6 @@ namespace TKOF.Player
             }
 
             _current = found;
-            // TODO: mostrar/ocultar prompt de UI con _current?.InteractionPrompt
-        }
+        } 
     }
 }

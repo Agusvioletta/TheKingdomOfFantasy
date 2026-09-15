@@ -17,11 +17,9 @@ namespace TKOF.Core
         private static GameManager _instance;
 
         /// <summary>
-        /// Si todavía no existe ninguno en la escena (por ejemplo, estás
-        /// probando una escena suelta sin pasar por MainMenu), se crea uno
-        /// solo automáticamente la primera vez que alguien lo pide — así no
-        /// hace falta acordarse de poner el Bootstrap a mano en cada escena
-        /// que abrís para probar.
+        /// Si todavía no existe en la escena, se crea uno
+        /// solo automáticamente la primera vez que alguien lo pide así no
+        /// hace falta poner el Bootstrap a mano en cada escena para probar.
         /// </summary>
         public static GameManager Instance
         {
@@ -42,8 +40,8 @@ namespace TKOF.Core
 
         // ESTRUCTURA DE DATOS: Dictionary.
         // Se usa para llevar el registro de qué coleccionable (identificado por
-        // un id único, ej: "diario_01") ya fue recolectado. Un Dictionary da
-        // acceso O(1) por clave, ideal para "¿ya lo recogí?" sin recorrer listas.
+        // un id único como diario_01) ya fue recolectado. Un Dictionary da
+        // acceso O(1) por clave, ideal para ver si ya lo recogiste sin recorrer listas.
         private readonly Dictionary<string, bool> _collectedItems = new Dictionary<string, bool>();
 
         public GameState CurrentState { get; private set; } = GameState.MainMenu;
@@ -71,7 +69,7 @@ namespace TKOF.Core
 
         public void StartGame()
         {
-            Time.timeScale = 1f; // por si veníamos de un panel pausado
+            Time.timeScale = 1f; 
             CurrentState = GameState.Playing;
             SceneManager.LoadScene(gameplaySceneName);
         }

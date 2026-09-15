@@ -8,7 +8,7 @@ namespace TKOF.Player
     /// Límite de sprint: se gasta corriendo, se regenera al no correr (con un
     /// pequeño delay antes de empezar a regenerar). PlayerController le
     /// pregunta CanSprint antes de aplicar la velocidad de sprint, así que
-    /// aunque mantengas Shift apretado, si no hay stamina no corrés.
+    /// aunque mantenga Shift apretado, si no hay stamina no corrés.
     /// </summary>
     public class PlayerStamina : MonoBehaviour
     {

@@ -6,9 +6,8 @@ using TKOF.Core;
 namespace TKOF.Systems
 {
     /// <summary>
-    /// Uso concreto del ObjectPool&lt;T&gt; genérico: en vez de crear y destruir
-    /// un AudioSource por cada paso/cadena de Brutus (costoso y genera
-    /// garbage), se piden y devuelven instancias reutilizables.
+    /// Uso concreto del ObjectPool genérico: en vez de crear y destruir
+    /// un AudioSource por cada paso/cadena de Brutus, se piden y devuelven instancias reutilizables.
     /// </summary>
     public class FootstepAudioPool : MonoBehaviour
     {
@@ -17,9 +16,6 @@ namespace TKOF.Systems
 
         private ObjectPool<AudioSource> _pool;
 
-        // Si un AudioSource se reutiliza antes de que termine su devolución
-        // pendiente del uso anterior, cancelamos esa corrutina vieja para que
-        // no lo desactive a mitad de la nueva reproducción.
         private readonly Dictionary<AudioSource, Coroutine> _pendingReturns = new Dictionary<AudioSource, Coroutine>();
 
         private void Awake()

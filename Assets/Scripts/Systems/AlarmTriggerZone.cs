@@ -4,10 +4,9 @@ using TKOF.AI;
 namespace TKOF.Systems
 {
     /// <summary>
-    /// Ejemplo de Trigger (requisito de Motores de Desarrollo 1, punto 7),
-    /// integrado como mecánica real de sigilo: al entrar el jugador, prende
-    /// una luz roja Y fuerza a Brutus a estado de Alerta hacia esta posición
-    /// — como si algo (una trampa, un sensor) delatara al jugador.
+    /// Ejemplo de Trigger,
+    /// integrado como mecánica real de sigilo, al entrar el jugador prende
+    /// una luz roja y fuerza a Brutus a estado de Alerta hacia esta posición
     /// </summary>
     [RequireComponent(typeof(Collider))]
     public class AlarmTriggerZone : MonoBehaviour

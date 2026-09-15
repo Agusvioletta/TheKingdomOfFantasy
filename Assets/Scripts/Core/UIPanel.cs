@@ -3,7 +3,7 @@ using UnityEngine;
 namespace TKOF.Core
 {
     /// <summary>
-    /// HERENCIA (caso 1): clase base propia (no MonoBehaviour "pelado") de la
+    /// HERENCIA: clase base propia (no solo MonoBehaviour) de la
     /// que heredan todos los paneles de UI del juego. Encapsula el
     /// mostrar/ocultar y deja que cada panel hijo agregue su propio
     /// comportamiento (Show/Hide con OnShow/OnHide como hooks).

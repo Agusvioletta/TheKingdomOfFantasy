@@ -7,7 +7,7 @@ namespace TKOF.Player
     public enum HeartRateState { Normal, Alert, Danger, Critical }
 
     /// <summary>
-    /// Pulsera del Reino. Sube con el sprint y con la cercanía a Brutus
+    /// Sube con el sprint y con la cercanía a Brutus
     /// (el BrutusController llama a AddThreatPressure), baja sola con el
     /// tiempo. Cada vez que cambia, publica el evento OnBpmChanged (Observer)
     /// para que el HUD, sin acoplarse a esta clase, actualice color y número.
@@ -25,7 +25,7 @@ namespace TKOF.Player
         [SerializeField] private InputActionReference breatheAction;
 
         private float _bpm;
-        private float _threatPressure; // aportado por enemigos cercanos, 0-1
+        private float _threatPressure; 
 
         public HeartRateState CurrentState { get; private set; } = HeartRateState.Normal;
         public int CurrentBpm => Mathf.RoundToInt(_bpm);
@@ -58,7 +58,6 @@ namespace TKOF.Player
             UpdateState();
         }
 
-        /// <summary>Llamado por Brutus según distancia/visibilidad (0 = lejos, 1 = muy cerca).</summary>
         public void SetThreatPressure(float value) => _threatPressure = Mathf.Clamp01(value);
 
         private void UpdateState()
@@ -75,8 +74,6 @@ namespace TKOF.Player
             EventManager.RaiseBpmChanged(CurrentBpm);
             if (CurrentState != previous)
             {
-                // El estado crítico sostenido podría, por ejemplo, disparar un jadeo fuerte
-                // que atraiga a Brutus (gancho para la mecánica de Control de Respiración).
             }
         }
     }

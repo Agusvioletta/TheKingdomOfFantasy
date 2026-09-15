@@ -3,13 +3,6 @@ using UnityEngine.InputSystem;
 
 namespace TKOF.Player
 {
-    /// <summary>
-    /// Movimiento en tercera persona. El "Player" (este transform) rota en Y
-    /// con el mouse y es lo que mueve el CharacterController. El CameraPivot
-    /// (hijo, altura de hombros) rota en X (pitch). La Camera real es hija
-    /// del pivot, ubicada con un offset "sobre el hombro" y con un chequeo de
-    /// colisión simple para no atravesar paredes.
-    /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
@@ -22,19 +15,19 @@ namespace TKOF.Player
         [SerializeField] private float crouchingHeight = 1.0f;
 
         [Header("Cámara en tercera persona")]
-        [SerializeField] private Transform cameraPivot;      // punto de rotación (altura de hombro)
-        [SerializeField] private Transform cameraTransform;  // la Camera real, hija del pivot
-        [SerializeField] private Vector3 shoulderOffset = new Vector3(0.5f, 0.3f, -2.5f); // sobre el hombro derecho
+        [SerializeField] private Transform cameraPivot;      
+        [SerializeField] private Transform cameraTransform;  
+        [SerializeField] private Vector3 shoulderOffset = new Vector3(0.5f, 0.3f, -2.5f); 
         [SerializeField] private float cameraCollisionRadius = 0.25f;
         [SerializeField] private LayerMask cameraObstacles;
 
-        [Header("Animación (opcional)")]
-        [SerializeField] private Animator animator; // dejalo vacío si todavía no tenés modelo/animaciones
+        [Header("Animación")]
+        [SerializeField] private Animator animator; 
 
-        [Header("Stamina (opcional)")]
-        [SerializeField] private PlayerStamina stamina; // dejalo vacío si no usás límite de sprint
+        [Header("Stamina")]
+        [SerializeField] private PlayerStamina stamina; 
 
-        [Header("Empujar cajas físicas (opcional)")]
+        [Header("Empujar cajas físicas")]
         [SerializeField] private float pushForce = 3f;
 
         [Header("Input Actions")]
@@ -87,10 +80,7 @@ namespace TKOF.Player
         private void HandleLook()
         {
             Vector2 look = lookAction.action.ReadValue<Vector2>();
-            // Yaw: rota todo el cuerpo del jugador (así "adelante" para el
-            // movimiento siempre es hacia donde mira la cámara).
             transform.Rotate(Vector3.up * look.x * mouseSensitivity);
-            // Pitch: solo el pivot de la cámara.
             _pitch = Mathf.Clamp(_pitch - look.y * mouseSensitivity, -40f, 70f);
             cameraPivot.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
         }
@@ -125,8 +115,8 @@ namespace TKOF.Player
         }
 
         /// <summary>
-        /// Ubica la cámara en el offset "sobre el hombro" deseado, pero si hay
-        /// una pared en el medio (SphereCast desde el pivot), la acerca para
+        /// Ubica la cámara en el offset  deseado, pero si hay
+        /// una pared en el medio, la acerca para
         /// no atravesarla.
         /// </summary>
         private void PositionCamera()
@@ -150,17 +140,11 @@ namespace TKOF.Player
         public bool IsCrouching => _isCrouching;
         public bool IsSprinting => sprintAction.action.IsPressed() && (stamina == null || stamina.CanSprint);
 
-        /// <summary>
-        /// El CharacterController NO empuja Rigidbodies por sí solo — hay que
-        /// hacerlo a mano. Unity llama esto automáticamente cada vez que el
-        /// CharacterController choca contra algo mientras se mueve.
-        /// </summary>
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
             Rigidbody body = hit.collider.attachedRigidbody;
             if (body == null || body.isKinematic) return;
 
-            // No empujar hacia abajo (evita "pisar" cajas raro al caminar sobre ellas)
             if (hit.moveDirection.y < -0.3f) return;
 
             Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0f, hit.moveDirection.z);

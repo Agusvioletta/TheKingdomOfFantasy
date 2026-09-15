@@ -6,14 +6,11 @@ namespace TKOF.Core
     /// <summary>
     /// PATRÓN: POOL (Object Pool) genérico.
     /// Reutiliza instancias en vez de Instantiate/Destroy constantemente.
-    /// Se usa por ejemplo para los AudioSource de pisadas/cadenas de Brutus
-    /// (ver FootstepAudioPool) y podría reutilizarse para partículas de polvo
-    /// al agacharse, impactos, etc.
     /// </summary>
-    /// <typeparam name="T">Componente que se va a poolear (ej: AudioSource, ParticleSystem)</typeparam>
+    /// <typeparam name="T">Componente que se va a poolear</typeparam>
     public class ObjectPool<T> where T : Component
     {
-        // ESTRUCTURA DE DATOS: List<T>, usada como pila de disponibles.
+        // ESTRUCTURA DE DATOS: List<T>, usada como lista de disponibles.
         private readonly List<T> _available = new List<T>();
         private readonly T _prefab;
         private readonly Transform _parent;

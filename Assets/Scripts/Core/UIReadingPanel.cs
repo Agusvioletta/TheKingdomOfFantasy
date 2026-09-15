@@ -4,10 +4,7 @@ using UnityEngine.UI;
 namespace TKOF.Core
 {
     /// <summary>
-    /// Panel de lectura (diarios/fotos). Usa un acceso estático simple —no es
-    /// el caso de Singleton que se explica en el video, ese es GameManager—
-    /// solo una referencia de conveniencia a un panel único en la escena.
-    /// Abrir/cerrar lo decide InteractionController, no este script.
+    /// Panel de lectura (diarios/fotos).
     /// </summary>
     public class UIReadingPanel : UIPanel
     {
@@ -16,9 +13,6 @@ namespace TKOF.Core
         [SerializeField] private Text bodyText;
         [SerializeField] private Image bodyImage;
 
-        // Posición del texto cuando hay foto arriba (la que ya acomodaste a
-        // mano en el Editor, "bottom center"). Se guarda automáticamente la
-        // primera vez que corre, no hace falta tocar nada acá.
         private RectTransform _textRect;
         private Vector2 _textAnchorMinWithImage;
         private Vector2 _textAnchorMaxWithImage;
@@ -35,7 +29,7 @@ namespace TKOF.Core
             _textAnchoredPosWithImage = _textRect.anchoredPosition;
         }
 
-        private void Start() => Hide(); // arranca oculto
+        private void Start() => Hide(); 
 
         public void ShowText(string text)
         {
@@ -58,7 +52,7 @@ namespace TKOF.Core
             bodyImage.sprite = sprite;
             bodyText.text = caption;
 
-            // Con foto: vuelve a la posición "abajo" que configuraste en el Editor.
+            // Con foto: el texto vuelve a la posición "abajo" 
             _textRect.anchorMin = _textAnchorMinWithImage;
             _textRect.anchorMax = _textAnchorMaxWithImage;
             _textRect.anchoredPosition = _textAnchoredPosWithImage;

@@ -4,9 +4,8 @@ using UnityEngine.UI;
 namespace TKOF.Core
 {
     /// <summary>
-    /// Se suscribe (Observer) a los eventos de BPM, batería de linterna y
-    /// stamina, y actualiza el texto/color/barra en pantalla. No conoce a
-    /// PlayerHeartRate, Flashlight ni PlayerStamina directamente — solo
+    /// Se suscribe Observer a los eventos de BPM, batería de linterna y
+    /// stamina, y actualiza el texto/color/barra en pantalla y solo
     /// escucha el EventManager.
     /// </summary>
     public class HUDController : MonoBehaviour
