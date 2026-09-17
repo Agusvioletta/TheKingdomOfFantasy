@@ -36,26 +36,37 @@ namespace TKOF.Core
             bodyImage.gameObject.SetActive(false);
             bodyText.gameObject.SetActive(true);
             bodyText.text = text;
+            bodyText.alignment = TextAnchor.MiddleCenter;
 
-            // Solo texto: centrado en el panel.
-            _textRect.anchorMin = CenterAnchor;
-            _textRect.anchorMax = CenterAnchor;
-            _textRect.anchoredPosition = Vector2.zero;
+            // Solo texto: ocupa todo el panel, centrado.
+            _textRect.anchorMin = Vector2.zero;
+            _textRect.anchorMax = Vector2.one;
+            _textRect.offsetMin = Vector2.zero;
+            _textRect.offsetMax = Vector2.zero;
 
             Show();
         }
 
         public void ShowImage(Sprite sprite, string caption)
         {
-            bodyText.gameObject.SetActive(true);
             bodyImage.gameObject.SetActive(true);
+            bodyText.gameObject.SetActive(true);
             bodyImage.sprite = sprite;
             bodyText.text = caption;
+            bodyText.alignment = TextAnchor.MiddleCenter;
 
-            // Con foto: el texto vuelve a la posición "abajo" 
-            _textRect.anchorMin = _textAnchorMinWithImage;
-            _textRect.anchorMax = _textAnchorMaxWithImage;
-            _textRect.anchoredPosition = _textAnchoredPosWithImage;
+            // Imagen: centrada, ocupando la parte de arriba
+            var imgRect = bodyImage.rectTransform;
+            imgRect.anchorMin = new Vector2(0.1f, 0.25f);
+            imgRect.anchorMax = new Vector2(0.9f, 0.85f);
+            imgRect.offsetMin = Vector2.zero;
+            imgRect.offsetMax = Vector2.zero;
+
+            // Texto: franja fija abajo
+            _textRect.anchorMin = new Vector2(0.05f, 0f);
+            _textRect.anchorMax = new Vector2(0.95f, 0.2f);
+            _textRect.offsetMin = Vector2.zero;
+            _textRect.offsetMax = Vector2.zero;
 
             Show();
         }

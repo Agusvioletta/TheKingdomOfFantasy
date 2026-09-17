@@ -26,6 +26,7 @@ namespace TKOF.AI
 
         public void Enter(BrutusController b)
         {
+            b.Agent.isStopped = false;
             b.Agent.speed = b.PatrolSpeed;
             b.Agent.SetDestination(b.PeekNextPatrolPoint());
             _isWaiting = false;

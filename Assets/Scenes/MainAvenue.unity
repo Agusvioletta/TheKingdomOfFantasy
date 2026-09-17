@@ -3118,7 +3118,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: b636950472b341d428228a80ea6f6cba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3159,7 +3159,7 @@ Transform:
   m_GameObject: {fileID: 393118361}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19.965, y: 0.992, z: 1.023}
+  m_LocalPosition: {x: 1.91, y: 0.18, z: 8.34}
   m_LocalScale: {x: 0.1, y: 0.03, z: 0.15}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3227,14 +3227,14 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: New Text
 --- !u!222 &406123510
@@ -4688,7 +4688,7 @@ Transform:
   m_GameObject: {fileID: 754560013}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.33, y: 0.99, z: 1.032}
+  m_LocalPosition: {x: 15.594, y: 0.932, z: 18.248}
   m_LocalScale: {x: 0.1, y: 0.03, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6239,11 +6239,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TKOF.Interactables.Diary
   itemId: diario_01
   highlightVisual: {fileID: 2024537459}
-  entryText: 'Encuentra el ticket, metelo en el carrusel y encuentra la  nueva salida
-    junto a la fuente.
-
-    CUIDADO depende por que zona actives el carrusel, Brutus
-    te vera.'
+  entryText: 'Activa el carrusel con el ticket y escapa por la trampilla (Pista:
+    zona de comidas)'
 --- !u!1 &1177741165
 GameObject:
   m_ObjectHideFlags: 0

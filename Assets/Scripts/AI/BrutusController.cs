@@ -39,9 +39,7 @@ namespace TKOF.AI
 
         private float _stepTimer;
 
-        // detalle de distancia/ángulo/patrulla frame a frame. En
-        // false para no inundar la console con logs 
-        public const bool VerboseLogging = false;
+        public static bool VerboseLogging = false;
 
         [Header("Animación")]
         [SerializeField] private Animator animator; 
@@ -229,9 +227,7 @@ namespace TKOF.AI
 
         public void CapturePlayer()
         {
-#if UNITY_EDITOR
-            Debug.Log($"[Brutus] CapturePlayer() ejecutado. agent.isStopped antes de esto: {_agent.isStopped}");
-#endif
+            if (GameManager.Instance.CurrentState != GameState.Playing) return;
             _agent.isStopped = true;
             EventManager.RaisePlayerDetected();
             GameManager.Instance.OnPlayerCaught();
